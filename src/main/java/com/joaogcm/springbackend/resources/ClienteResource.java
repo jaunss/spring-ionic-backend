@@ -1,5 +1,6 @@
 package com.joaogcm.springbackend.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,13 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.joaogcm.springbackend.dto.ClienteDTO;
+import com.joaogcm.springbackend.dto.ClienteNewDTO;
 import com.joaogcm.springbackend.entities.Cliente;
 import com.joaogcm.springbackend.services.ClienteService;
 
@@ -33,6 +37,15 @@ public class ClienteResource {
 		Cliente obj = cliente.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	/* Inserir uma Categoria */
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
+		Cliente obj = cliente.fromDTO(objDTO);
+		obj = cliente.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 
 	/* Atualizar uma Cliente */
 	@PutMapping(value = "/{id}")
@@ -41,7 +54,6 @@ public class ClienteResource {
 		obj.setId(id);
 		obj = cliente.update(obj);
 		return ResponseEntity.noContent().build();
-
 	}
 
 	/* Remover uma Cliente por id */
