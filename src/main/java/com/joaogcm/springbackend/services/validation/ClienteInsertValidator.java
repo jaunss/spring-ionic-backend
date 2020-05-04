@@ -6,12 +6,20 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.joaogcm.springbackend.dto.ClienteNewDTO;
+import com.joaogcm.springbackend.entities.Cliente;
 import com.joaogcm.springbackend.entities.enums.TipoCliente;
+import com.joaogcm.springbackend.repositories.ClienteRepository;
 import com.joaogcm.springbackend.resources.exceptions.FieldMessage;
 import com.joaogcm.springbackend.services.validation.util.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+	
+	@Autowired
+	private ClienteRepository repository;
+	
 	@Override
 	public void initialize(ClienteInsert ann) {
 		
@@ -27,6 +35,11 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		
 		if (objDTO.getTipo().equals(TipoCliente.PESSOAJURIDICA.getCodigo()) && !BR.isValidCNPJ(objDTO.getCpfOuCnpj())) {
 			list.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido."));
+		}
+		
+		Cliente aux = repository.findByEmail(objDTO.getEmail());
+		if (aux != null) {
+			list.add(new FieldMessage("email", "Email já existente."));
 		}
 		
 		// inclua os testes aqui, inserindo erros na lista
