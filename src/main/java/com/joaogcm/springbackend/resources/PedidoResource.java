@@ -1,11 +1,18 @@
 package com.joaogcm.springbackend.resources;
 
+import java.net.URI;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.joaogcm.springbackend.entities.Pedido;
 import com.joaogcm.springbackend.services.PedidoService;
@@ -15,13 +22,19 @@ import com.joaogcm.springbackend.services.PedidoService;
 public class PedidoResource {
 	
 	@Autowired
-	private PedidoService Pedido;
+	private PedidoService pedido;
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
-		Pedido obj = Pedido.findById(id);
+		Pedido obj = pedido.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	
+	/* Inserir uma Categoria */
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+		obj = pedido.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 }
