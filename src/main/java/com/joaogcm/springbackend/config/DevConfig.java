@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.joaogcm.springbackend.services.DatabaseService;
+import com.joaogcm.springbackend.services.EmailService;
+import com.joaogcm.springbackend.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -17,16 +19,21 @@ public class DevConfig {
 	@Autowired
 	private DatabaseService databaseService;
 	
-	@Value("#{spring.jpa.hibernate.ddl-auto}")
+	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
 	
 	@Bean
 	public Boolean instantiateDatabase() throws ParseException {
-		if ("create".equals(strategy)) {
+		if (!"create".equals(strategy)) {
 			return false;
 		}
 		
 		databaseService.instantiateDatabase();
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
