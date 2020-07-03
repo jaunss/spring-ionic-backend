@@ -107,8 +107,7 @@ public class DatabaseService {
 		prod11.getCategorias().addAll(Arrays.asList(cat7, cat8, cat9));
 
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9));
-		produtoRepository
-				.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10, prod11));
+		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10, prod11));
 
 		/*---------------------------------------//---------------------------------------*/
 
@@ -147,8 +146,7 @@ public class DatabaseService {
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagto1);
 
-		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/04/2020 10:50"),
-				null);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/04/2020 10:50"), null);
 		ped2.setPagamento(pagto2);
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
