@@ -3,6 +3,8 @@ package com.joaogcm.springbackend.services;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,10 @@ import com.joaogcm.springbackend.services.exceptions.ObjectNotFoundException;
 public class PedidoService {
 	
 	@Autowired
-	private PedidoRepository repository;
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private BoletoService boletoService;
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
@@ -28,22 +33,22 @@ public class PedidoService {
 	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Autowired
-	private BoletoService boletoService;
-	
-	@Autowired
 	private ProdutoService produtoService;
 	
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Autowired
+	private EmailService emailService;
 	
 	public Pedido findById(Integer id) {
-		Optional<Pedido> obj = repository.findById(id);
+		Optional<Pedido> obj = pedidoRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Causa: " + Pedido.class.getName())
 				);
 	}
 	
+	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setData(new Date());
@@ -55,7 +60,7 @@ public class PedidoService {
 			boletoService.preencherPagamentoComBoleto(pagto, obj.getData());
 		}
 		
-		obj = repository.save(obj);
+		obj = pedidoRepository.save(obj);
 		pagamentoRepository.save(obj.getPagamento());
 		
 		for (ItemPedido item : obj.getItens()) {
@@ -66,7 +71,8 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens());
-		System.out.println(obj);
+		
+		emailService.sendOrderConfirmationEmail(obj);
 		
 		return obj;
 	}
