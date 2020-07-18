@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +58,7 @@ public class ClienteResource {
 	}
 
 	/* Remover uma Cliente por id */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
 		cliente.deleteById(id);
@@ -64,6 +66,7 @@ public class ClienteResource {
 	}
 
 	/* Buscar todas as Clientes */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = cliente.findAll();
@@ -72,6 +75,7 @@ public class ClienteResource {
 	}
 
 	/* Paginação */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/pagina")
 	public ResponseEntity<Page<ClienteDTO>> findPage(
 			@RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
