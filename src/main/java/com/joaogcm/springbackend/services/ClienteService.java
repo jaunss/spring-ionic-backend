@@ -16,9 +16,12 @@ import com.joaogcm.springbackend.dto.ClienteNewDTO;
 import com.joaogcm.springbackend.entities.Cidade;
 import com.joaogcm.springbackend.entities.Cliente;
 import com.joaogcm.springbackend.entities.Endereco;
+import com.joaogcm.springbackend.entities.enums.PerfilCliente;
 import com.joaogcm.springbackend.entities.enums.TipoCliente;
 import com.joaogcm.springbackend.repositories.ClienteRepository;
 import com.joaogcm.springbackend.repositories.EnderecoRepository;
+import com.joaogcm.springbackend.security.UserSS;
+import com.joaogcm.springbackend.services.exceptions.AuthorizationException;
 import com.joaogcm.springbackend.services.exceptions.DataIntegrityException;
 import com.joaogcm.springbackend.services.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,11 @@ public class ClienteService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public Cliente findById(Integer id) {
+		UserSS user = UserService.userAuthenticated();
+		if (user == null || !user.hasRole(PerfilCliente.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		
 		Optional<Cliente> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Cliente não encontrado id: " + id + ", Causa: " + Cliente.class.getName()));
 	}
