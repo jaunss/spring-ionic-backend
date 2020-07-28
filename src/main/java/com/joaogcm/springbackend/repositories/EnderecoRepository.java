@@ -7,5 +7,5 @@ import com.joaogcm.springbackend.entities.Endereco;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer>{
-
+	
 }
