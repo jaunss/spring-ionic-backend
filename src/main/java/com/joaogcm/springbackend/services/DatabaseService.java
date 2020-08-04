@@ -72,10 +72,8 @@ public class DatabaseService {
 		Categoria cat3 = new Categoria(null, "Escritório");
 		Categoria cat4 = new Categoria(null, "Informática");
 		Categoria cat5 = new Categoria(null, "Cama, Mesa e Banho");
-		Categoria cat6 = new Categoria(null, "Eletrônicos");
-		Categoria cat7 = new Categoria(null, "Jardinagem");
-		Categoria cat8 = new Categoria(null, "Decoração");
-		Categoria cat9 = new Categoria(null, "Perfumaria");
+		Categoria cat6 = new Categoria(null, "Jardinagem");
+		Categoria cat7 = new Categoria(null, "Perfumaria");
 
 		Produto prod1 = new Produto(null, "Computador", 2000.00);
 		Produto prod2 = new Produto(null, "Impressora", 800.00);
@@ -135,21 +133,19 @@ public class DatabaseService {
 		cat5.getProdutos().addAll(Arrays.asList(prod8));
 		cat6.getProdutos().addAll(Arrays.asList(prod9, prod10));
 		cat7.getProdutos().addAll(Arrays.asList(prod11));
-		cat8.getProdutos().addAll(Arrays.asList(prod9, prod10, prod11));
-		cat9.getProdutos().addAll(Arrays.asList(prod3, prod8, prod11));
 		cat1.getProdutos().addAll(Arrays.asList(prod12, prod13, prod14, prod15, prod16, prod17, prod18, prod19, prod20, prod21, prod22, prod23, prod24, prod25, prod26, prod27, prod28, prod29, prod30, prod31, prod32, prod34, prod35, prod36, prod37, prod38, prod39, prod40, prod41, prod42, prod43, prod44, prod45, prod46, prod47, prod48, prod49, prod50));
 		
 		prod1.getCategorias().addAll(Arrays.asList(cat1));
 		prod2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-		prod3.getCategorias().addAll(Arrays.asList(cat1, cat4, cat9));
+		prod3.getCategorias().addAll(Arrays.asList(cat1, cat4));
 		prod4.getCategorias().addAll(Arrays.asList(cat2));
 		prod5.getCategorias().addAll(Arrays.asList(cat3));
 		prod6.getCategorias().addAll(Arrays.asList(cat3));
 		prod7.getCategorias().addAll(Arrays.asList(cat4));
-		prod8.getCategorias().addAll(Arrays.asList(cat5, cat9));
-		prod9.getCategorias().addAll(Arrays.asList(cat6, cat8));
-		prod10.getCategorias().addAll(Arrays.asList(cat6, cat8));
-		prod11.getCategorias().addAll(Arrays.asList(cat7, cat8, cat9));
+		prod8.getCategorias().addAll(Arrays.asList(cat5));
+		prod9.getCategorias().addAll(Arrays.asList(cat6));
+		prod10.getCategorias().addAll(Arrays.asList(cat6));
+		prod11.getCategorias().addAll(Arrays.asList(cat7));
 		prod12.getCategorias().add(cat1);
 		prod13.getCategorias().add(cat1);
 		prod14.getCategorias().add(cat1);
@@ -190,7 +186,7 @@ public class DatabaseService {
 		prod49.getCategorias().add(cat1);
 		prod50.getCategorias().add(cat1);
 		
-		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9));
+		categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7));
 		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5, prod6, prod7, prod8, prod9, prod10, prod11, prod12, prod13, prod14, prod15, prod16, prod17, prod18, prod19, prod20, prod21, prod22, prod23, prod24, prod25, prod26, prod27, prod28, prod29, prod30, prod31, prod32, prod34, prod35, prod36, prod37, prod38, prod39, prod40, prod41, prod42, prod43, prod44, prod45, prod46, prod47, prod48, prod49, prod50));
 
 		/*---------------------------------------//---------------------------------------*/
